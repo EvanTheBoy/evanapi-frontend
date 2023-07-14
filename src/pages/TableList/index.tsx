@@ -1,6 +1,6 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
-import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
+import {addRule, removeRule, updateRule} from '@/services/ant-design-pro/api';
+import {PlusOutlined} from '@ant-design/icons';
+import type {ActionType, ProColumns, ProDescriptionsItemProps} from '@ant-design/pro-components';
 import {
   FooterToolbar,
   ModalForm,
@@ -10,14 +10,15 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
-import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
+import {FormattedMessage, useIntl} from '@umijs/max';
+import {Button, Drawer, message} from 'antd';
+import React, {useRef, useState} from 'react';
+import type {FormValueType} from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import {
-  listInterfaceInfoVOByPageUsingGET,
+  listInterfaceInfoVOByPageUsingPOST,
 } from "@/services/evanapi-backend/interfaceInfoController";
+import {SortOrder} from "antd/lib/table/interface";
 
 /**
  * @en-US Add node
@@ -27,7 +28,7 @@ import {
 const handleAdd = async (fields: API.RuleListItem) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({ ...fields });
+    await addRule({...fields});
     hide();
     message.success('Added successfully');
     return true;
@@ -127,13 +128,8 @@ const TableList: React.FC = () => {
       valueType: 'textarea',
     },
     {
-      title: '接口地址',
+      title: 'url',
       dataIndex: 'url',
-      valueType: 'text',
-    },
-    {
-      title: '请求方法',
-      dataIndex: 'method',
       valueType: 'text',
     },
     {
@@ -162,6 +158,11 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: '请求方法',
+      dataIndex: 'method',
+      valueType: 'text',
+    },
+    {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
@@ -183,7 +184,7 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
+          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration"/>
         </a>,
         <a key="subscribeAlert" href="https://procomponents.ant.design/">
           <FormattedMessage
@@ -215,10 +216,21 @@ const TableList: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
           </Button>,
         ]}
-        request={listInterfaceInfoVOByPageUsingGET}
+        request={async (params, sort: Record<string, SortOrder>, filter: Record<string, (string | number)[] | null>) => {
+          const res = await listInterfaceInfoVOByPageUsingPOST({
+            ...params
+          })
+          if (res.data) {
+            return {
+              data: res.data.records || [],
+              success: true,
+              total: res.data.total,
+            }
+          }
+        }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -230,9 +242,9 @@ const TableList: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}
+              <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="项"/>
               &nbsp;&nbsp;
               <span>
                 <FormattedMessage
@@ -240,7 +252,7 @@ const TableList: React.FC = () => {
                   defaultMessage="Total number of service calls"
                 />{' '}
                 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
+                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万"/>
               </span>
             </div>
           }
@@ -298,7 +310,7 @@ const TableList: React.FC = () => {
           width="md"
           name="name"
         />
-        <ProFormTextArea width="md" name="desc" />
+        <ProFormTextArea width="md" name="desc"/>
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {

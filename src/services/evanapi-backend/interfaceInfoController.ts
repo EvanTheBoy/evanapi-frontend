@@ -47,13 +47,13 @@ export async function getInterfaceInfoVOByIdUsingGET(
   });
 }
 
-/** listInterfaceInfoVOByPage GET /api/interfaceInfo/list/page/vo */
-export async function listInterfaceInfoVOByPageUsingGET(
+/** listInterfaceInfoVOByPage POST /api/interfaceInfo/list/page/vo */
+export async function listInterfaceInfoVOByPageUsingPOST(
   body: API.InterfaceInfoQueryRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageInterfaceInfoVO>('/api/interfaceInfo/list/page/vo', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -62,13 +62,13 @@ export async function listInterfaceInfoVOByPageUsingGET(
   });
 }
 
-/** listMyInterfaceInfoVOByPage GET /api/interfaceInfo/my/list/page/vo */
-export async function listMyInterfaceInfoVOByPageUsingGET(
+/** listMyInterfaceInfoVOByPage POST /api/interfaceInfo/my/list/page/vo */
+export async function listMyInterfaceInfoVOByPageUsingPOST(
   body: API.InterfaceInfoQueryRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageInterfaceInfoVO>('/api/interfaceInfo/my/list/page/vo', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
