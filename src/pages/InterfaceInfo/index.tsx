@@ -70,7 +70,6 @@ const TableList: React.FC = () => {
         ...fields
       });
       hide();
-
       message.success('修改成功');
       return true;
     } catch (error: any) {
@@ -192,7 +191,6 @@ const TableList: React.FC = () => {
           }}
         >
           update
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="update"/>
         </a>,
         <a
           key="config"
@@ -201,7 +199,6 @@ const TableList: React.FC = () => {
           }}
         >
           delete
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="delete"/>
         </a>,
       ],
     },
