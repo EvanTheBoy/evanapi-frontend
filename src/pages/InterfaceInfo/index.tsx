@@ -1,4 +1,3 @@
-import {removeRule} from '@/services/ant-design-pro/api';
 import {PlusOutlined} from '@ant-design/icons';
 import type {ActionType, ProColumns, ProDescriptionsItemProps} from '@ant-design/pro-components';
 import {
@@ -12,34 +11,13 @@ import {Button, Drawer, message} from 'antd';
 import React, {useRef, useState} from 'react';
 import UpdateModal from './components/UpdateModal';
 import {
-  addInterfaceInfoUsingPOST,
+  addInterfaceInfoUsingPOST, deleteInterfaceInfoUsingPOST,
   listInterfaceInfoVOByPageUsingPOST, updateInterfaceInfoUsingPOST,
 } from "@/services/evanapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/lib/table/interface";
 import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
 
-/**
- *  Delete node
- * @zh-CN 删除节点
- *
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('Deleted successfully and will refresh soon');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Delete failed, please try again');
-    return false;
-  }
-};
+
 
 const TableList: React.FC = () => {
   /**
@@ -98,6 +76,30 @@ const TableList: React.FC = () => {
     } catch (error: any) {
       hide();
       message.error('操作失败:' + error.message);
+      return false;
+    }
+  };
+
+  /**
+   *  Delete node
+   * @zh-CN 删除节点
+   *
+   * @param record
+   */
+  const handleRemove = async (record: API.InterfaceInfoVO) => {
+    const hide = message.loading('正在删除');
+    if (!record) return true;
+    try {
+      await deleteInterfaceInfoUsingPOST({
+        id: record.id,
+      });
+      hide();
+      message.success('删除成功!');
+      actionRef.current?.reload()
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error('删除失败:' + error.message);
       return false;
     }
   };
@@ -189,7 +191,17 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="修改"/>
+          update
+          <FormattedMessage id="pages.searchTable.config" defaultMessage="update"/>
+        </a>,
+        <a
+          key="config"
+          onClick={() => {
+            handleRemove(record);
+          }}
+        >
+          delete
+          <FormattedMessage id="pages.searchTable.config" defaultMessage="delete"/>
         </a>,
       ],
     },
