@@ -3,11 +3,8 @@ import {PlusOutlined} from '@ant-design/icons';
 import type {ActionType, ProColumns, ProDescriptionsItemProps} from '@ant-design/pro-components';
 import {
   FooterToolbar,
-  ModalForm,
   PageContainer,
   ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useIntl} from '@umijs/max';
@@ -19,6 +16,7 @@ import {
   listInterfaceInfoVOByPageUsingPOST,
 } from "@/services/evanapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/lib/table/interface";
+import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
 
 /**
  * @en-US Add node
@@ -92,12 +90,12 @@ const TableList: React.FC = () => {
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
    *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /**
    * @en-US The pop-up window of the distribution update window
    * @zh-CN 分布更新窗口的弹窗
    * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
@@ -180,7 +178,7 @@ const TableList: React.FC = () => {
         <a
           key="config"
           onClick={() => {
-            handleUpdateModalOpen(true);
+            handleUpdateModalVisible(true);
             setCurrentRow(record);
           }}
         >
@@ -207,7 +205,7 @@ const TableList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalOpen(true);
+              handleModalVisible(true);
             }}
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
@@ -277,12 +275,11 @@ const TableList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-
       <UpdateForm
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
           if (success) {
-            handleUpdateModalOpen(false);
+            handleUpdateModalVisible(false);
             setCurrentRow(undefined);
             if (actionRef.current) {
               actionRef.current.reload();
@@ -290,12 +287,12 @@ const TableList: React.FC = () => {
           }
         }}
         onCancel={() => {
-          handleUpdateModalOpen(false);
+          handleUpdateModalVisible(false);
           if (!showDetail) {
             setCurrentRow(undefined);
           }
         }}
-        updateModalOpen={updateModalOpen}
+        updateModalOpen={updateModalVisible}
         values={currentRow || {}}
       />
 
@@ -322,6 +319,8 @@ const TableList: React.FC = () => {
           />
         )}
       </Drawer>
+      <CreateModal columns={columns} onCancel={() => {handleModalVisible(false)}}
+                   onSubmit={(values) => {handleAdd(values)}} visible={createModalVisible} />
     </PageContainer>
   );
 };
