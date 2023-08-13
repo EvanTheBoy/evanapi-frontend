@@ -112,6 +112,10 @@ declare namespace API {
     id?: number;
   };
 
+  type IdRequest = {
+    id?: number;
+  };
+
   type InterfaceInfoAddRequest = {
     description?: string;
     method?: string;
@@ -135,17 +139,6 @@ declare namespace API {
     status?: number;
     url?: string;
     userId?: number;
-  };
-
-  type InterfaceInfoUpdateRequest = {
-    description?: string;
-    id?: number;
-    method?: string;
-    name?: string;
-    requestHeader?: string;
-    responseHeader?: string;
-    status?: number;
-    url?: string;
   };
 
   type InterfaceInfoVO = {
@@ -303,10 +296,12 @@ declare namespace API {
   };
 
   type User = {
+    accessKey?: string;
     createTime?: string;
     id?: number;
     isDelete?: number;
     mpOpenId?: string;
+    secretKey?: string;
     unionId?: string;
     updateTime?: string;
     userAccount?: string;

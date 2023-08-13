@@ -11,8 +11,12 @@ import {Button, Drawer, message} from 'antd';
 import React, {useRef, useState} from 'react';
 import UpdateModal from './components/UpdateModal';
 import {
-  addInterfaceInfoUsingPOST, deleteInterfaceInfoUsingPOST,
-  listInterfaceInfoVOByPageUsingPOST, updateInterfaceInfoUsingPOST,
+  addInterfaceInfoUsingPOST,
+  deleteInterfaceInfoUsingPOST,
+  listInterfaceInfoVOByPageUsingPOST,
+  offlineInterfaceInfoUsingPOST,
+  onlineInterfaceInfoUsingPOST,
+  updateInterfaceInfoUsingPOST,
 } from "@/services/evanapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/lib/table/interface";
 import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
@@ -104,6 +108,54 @@ const TableList: React.FC = () => {
   };
 
   /**
+   *  Delete node
+   * @zh-CN 发布节点
+   *
+   * @param record
+   */
+  const handleOnline = async (record: API.IdRequest) => {
+    const hide = message.loading('发布中');
+    if (!record) return true;
+    try {
+      await onlineInterfaceInfoUsingPOST({
+        id: record.id,
+      });
+      hide();
+      message.success('发布成功!');
+      actionRef.current?.reload()
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error('发布失败:' + error.message);
+      return false;
+    }
+  };
+
+  /**
+   *  Delete node
+   * @zh-CN 下线节点
+   *
+   * @param record
+   */
+  const handleOffline = async (record: API.IdRequest) => {
+    const hide = message.loading('下线中');
+    if (!record) return true;
+    try {
+      await offlineInterfaceInfoUsingPOST({
+        id: record.id,
+      });
+      hide();
+      message.success('下线成功!');
+      actionRef.current?.reload()
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error('下线失败:' + error.message);
+      return false;
+    }
+  };
+
+  /**
    * @en-US International configuration
    * @zh-CN 国际化配置
    * */
@@ -190,15 +242,32 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          update
+          更新
         </a>,
+        record.status === 0 ? <a
+            key="config"
+            onClick={() => {
+              handleOnline(record);
+            }}
+        >
+          发布
+        </a> : null,
+        record.status === 1 ? <a
+            type="text"
+            key="config"
+            onClick={() => {
+              handleOffline(record);
+            }}
+        >
+          下线
+        </a> : null,
         <a
           key="config"
           onClick={() => {
             handleRemove(record);
           }}
         >
-          delete
+          删除
         </a>,
       ],
     },

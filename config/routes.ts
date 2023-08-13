@@ -11,6 +11,8 @@
  * @doc https://umijs.org/docs/guides/routes
  */
 export default [
+  {path: '/', name: '主页', icon: 'smile', component: './Index'},
+  {path: '/interface_info_quest/:id', name: '查看路由', icon: 'smile', component: './InterfaceInfoQuest', hideInMenu: true},
   {
     path: '/user',
     layout: false,
@@ -22,12 +24,6 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/welcome',
-  //   name: 'welcome',
-  //   icon: 'smile',
-  //   component: './Welcome',
-  // },
   {
     path: '/admin',
     name: 'admin',
@@ -42,11 +38,6 @@ export default [
       },
     ],
   },
-
-  // {
-  //   path: '/',
-  //   redirect: '/welcome',
-  // },
   {
     path: '*',
     layout: false,
