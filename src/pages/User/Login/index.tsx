@@ -102,18 +102,6 @@ const Login: React.FC = () => {
 
   const intl = useIntl();
 
-  // const fetchUserInfo = async () => {
-  //   const userInfo = await initialState?.fetchUserInfo?.();
-  //   if (userInfo) {
-  //     flushSync(() => {
-  //       setInitialState((s) => ({
-  //         ...s,
-  //         currentUser: userInfo,
-  //       }));
-  //     });
-  //   }
-  // };
-
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录

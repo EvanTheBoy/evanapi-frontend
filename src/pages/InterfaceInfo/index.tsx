@@ -22,7 +22,6 @@ import {SortOrder} from "antd/lib/table/interface";
 import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
 
 
-
 const TableList: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
@@ -38,8 +37,8 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.InterfaceInfoVO>();
+  const [selectedRowsState, setSelectedRows] = useState<API.InterfaceInfoVO[]>([]);
 
   /**
    * @en-US Add node
@@ -68,9 +67,13 @@ const TableList: React.FC = () => {
    * @param fields
    */
   const handleUpdate = async (fields: API.InterfaceInfoVO) => {
+    if (!currentRow) {
+      return;
+    }
     const hide = message.loading('修改中');
     try {
       await updateInterfaceInfoUsingPOST({
+        id: currentRow.id,
         ...fields
       });
       hide();
@@ -196,12 +199,17 @@ const TableList: React.FC = () => {
     {
       title: '请求头',
       dataIndex: 'requestHeader',
-      valueType: 'textarea',
+      valueType: 'jsonCode',
+    },
+    {
+      title: '请求参数',
+      dataIndex: 'requestParams',
+      valueType: 'jsonCode',
     },
     {
       title: '响应头',
       dataIndex: 'responseHeader',
-      valueType: 'textarea',
+      valueType: 'jsonCode',
     },
     {
       title: '状态',
