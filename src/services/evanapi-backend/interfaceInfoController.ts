@@ -139,7 +139,7 @@ export async function searchInterfaceInfoVOByPageUsingPOST(
 
 /** updateInterfaceInfo POST /api/interfaceInfo/update */
 export async function updateInterfaceInfoUsingPOST(
-  body: API.IdRequest,
+  body: API.InterfaceInfoUpdateRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseboolean>('/api/interfaceInfo/update', {

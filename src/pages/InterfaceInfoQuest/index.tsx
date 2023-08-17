@@ -1,5 +1,5 @@
 import {PageContainer} from '@ant-design/pro-components';
-import {Button, Card, Descriptions, Form, Input, message, Spin} from 'antd';
+import {Button, Card, Descriptions, Form, Input, message} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {
   getInterfaceInfoVOByIdUsingGET, invokeInterfaceInfoUsingPOST,

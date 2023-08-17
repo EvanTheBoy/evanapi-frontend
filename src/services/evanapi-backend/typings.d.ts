@@ -154,6 +154,18 @@ declare namespace API {
     userId?: number;
   };
 
+  type InterfaceInfoUpdateRequest = {
+    description?: string;
+    id?: number;
+    method?: string;
+    name?: string;
+    requestHeader?: string;
+    requestParams?: string;
+    responseHeader?: string;
+    status?: number;
+    url?: string;
+  };
+
   type InterfaceInfoVO = {
     createTime?: string;
     description?: string;
