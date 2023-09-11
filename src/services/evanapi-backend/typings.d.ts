@@ -17,6 +17,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListInterfaceInfoVO = {
+    code?: number;
+    data?: InterfaceInfoVO[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO = {
     code?: number;
     data?: LoginUserVO;
@@ -170,12 +176,14 @@ declare namespace API {
     createTime?: string;
     description?: string;
     id?: number;
+    isDelete?: number;
     method?: string;
     name?: string;
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
     status?: number;
+    totalNum?: number;
     updateTime?: string;
     url?: string;
     user?: UserVO;
@@ -343,6 +351,21 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: string;
+  };
+
+  type UserInterfaceInfoAddRequest = {
+    interfaceInfoId?: number;
+    leftNum?: number;
+    totalNum?: number;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoUpdateRequest = {
+    id?: number;
+    interfaceInfoId?: number;
+    leftNum?: number;
+    status?: number;
+    totalNum?: number;
   };
 
   type userLoginByWxOpenUsingGETParams = {

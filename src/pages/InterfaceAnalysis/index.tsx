@@ -3,23 +3,40 @@ import {
 } from '@ant-design/pro-components';
 import ReactECharts from 'echarts-for-react';
 import React, {useEffect, useState} from 'react';
+import {listTopInvokedInterfaceUsingGET} from "@/services/evanapi-backend/analysisController";
+import {char} from "stylis";
 
 /**
  * 接口分析
  * @constructor
  */
 const InterfaceAnalysis: React.FC = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<API.InterfaceInfoVO[]>([]);
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // 从远程获取数据
+        try {
+            listTopInvokedInterfaceUsingGET().then(res => {
+                if (res.data) {
+                    setData(res.data);
+                }
+            })
+        } catch (e: any) {
 
+        }
     }, [])
+
+    const chartData = data.map(item => {
+        return {
+            value: item.totalNum,
+            name: item.name
+        }
+    })
 
     const option = {
         title: {
-            text: 'Referer of a Website',
+            text: '调用次数前3的接口',
             subtext: 'Fake Data',
             left: 'center'
         },
@@ -35,13 +52,7 @@ const InterfaceAnalysis: React.FC = () => {
                 name: 'Access From',
                 type: 'pie',
                 radius: '50%',
-                data: [
-                    {value: 1048, name: 'Search Engine'},
-                    {value: 735, name: 'Direct'},
-                    {value: 580, name: 'Email'},
-                    {value: 484, name: 'Union Ads'},
-                    {value: 300, name: 'Video Ads'}
-                ],
+                data: chartData,
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
