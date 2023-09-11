@@ -4,7 +4,6 @@ import {
 import ReactECharts from 'echarts-for-react';
 import React, {useEffect, useState} from 'react';
 import {listTopInvokedInterfaceUsingGET} from "@/services/evanapi-backend/analysisController";
-import {char} from "stylis";
 
 /**
  * 接口分析
