@@ -36,6 +36,12 @@ export default [
         path: '/admin/interfaceInfo',
         component: './InterfaceInfo',
       },
+      {
+        name: '接口分析',
+        icon: 'analysis',
+        path: '/admin/interfaceAnalysis',
+        component: './InterfaceAnalysis',
+      },
     ],
   },
   {
